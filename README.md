@@ -17,6 +17,7 @@ Vue composition-api toolkit.
 - [x] useOnline
 - [x] useVisibilityState
 - [x] useTimeout
+- [x] useTimeoutFn
 - [x] useInterval
 - [x] useRendered
 - [x] useScroll
