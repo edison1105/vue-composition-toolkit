@@ -22,6 +22,7 @@ Vue composition-api toolkit.
 - [x] useScroll
 - [x] useScrolling
 - [x] useLocalStorage
+- [x] useSessionStorage
 - [x] useCounter
 - [x] useToggle
 - [x] useBoolean
