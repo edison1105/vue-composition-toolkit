@@ -30,7 +30,7 @@ const defaultConfig: SWRConfig = {
   onError: () => {}
 }
 
-type UpdateReason = Ref<'fresh' | 'stale' | 'network'>
+export type UpdateReason = Ref<'fresh' | 'stale' | 'network'>
 type SWRResult<D, E> = [
   () => any,
   {
@@ -61,9 +61,9 @@ export default function useSWR<Data = any, Error = any>(
   const refSwr = computed(() => refMaxAge.value + config.swr)
 
   function performFetch() {
-    const refStartTime = now()
+    const startTime = now()
     // Is fresh, use the cache to satisfy the request
-    if (refStartTime <= refMaxAge.value) {
+    if (startTime <= refMaxAge.value) {
       refData.value = getCache(key)
       refReason.value = 'fresh'
       return
@@ -71,7 +71,7 @@ export default function useSWR<Data = any, Error = any>(
 
     // The cached value will be stale, but will be used to fulfill the API request,
     // at the same time, "in the background", a revalidation request will be made.
-    if (refStartTime <= refSwr.value) {
+    if (startTime <= refSwr.value) {
       refReason.value = 'stale'
       refData.value = getCache(key)
       if (isClient && isDef(window.requestIdleCallback)) {
