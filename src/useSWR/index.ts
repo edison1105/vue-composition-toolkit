@@ -88,15 +88,26 @@ export default function useSWR<Data = any, Error = any>(
     revalidate()
   }
 
+  let revalidateId = 0
   async function revalidate() {
+    const currentId = ++revalidateId
     try {
-      refData.value = await fetch()
+      const res = await fetch()
+      // Means that there is a newer `revalidation` here,
+      // and invalidates the current `revalidation`.
+      if (currentId < revalidateId) return
+
+      refData.value = res
       setCache(key, refData.value)
       // call onSuccess hook
       config.onSuccess && config.onSuccess(refData.value, key, config)
       // update cachedTime
       refCachedTime.value = now()
     } catch (e) {
+      // Means that there is a newer `revalidation` here,
+      // and invalidates the current `revalidation`.
+      if (currentId < revalidateId) return
+
       refError.value = e
       // call onError hook
       config.onError && config.onError(e, key, config)
