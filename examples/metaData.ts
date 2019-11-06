@@ -38,6 +38,9 @@ import VisibilityStateStory, {
 import LocalStorageStory, {
   code as localStorageCode
 } from '../src/stories/useLocalStorage.story'
+import SessionStorageStory, {
+  code as sessionStorageCode
+} from '../src/stories/useSessionStorage.story'
 import WindowFocusStory, {
   code as windowFocusCode
 } from '../src/stories/useWindowFocus.story'
@@ -83,6 +86,11 @@ export default [
     title: 'useLocalStorage',
     component: LocalStorageStory,
     code: localStorageCode
+  },
+  {
+    title: 'useSessionStorage',
+    component: SessionStorageStory,
+    code: sessionStorageCode
   },
   {
     title: 'useWindowFocus',
