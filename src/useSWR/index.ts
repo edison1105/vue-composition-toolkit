@@ -1,34 +1,11 @@
 import { ref, Ref, UnwrapRef, computed, watch } from '@vue/runtime-dom'
+import throttle from 'lodash.throttle'
 import useLocalStorage from '../useLocalStorage'
 import useVisibilityState from '../useVisibilityState'
 import useWindowFocus from '../useWindowFocus'
 import { setCache, getCache } from './cache'
 import { now, isClient, isDef } from '../utils'
-import throttle from 'lodash.throttle'
-
-interface SWRConfig<D = any, E = any> {
-  maxAge: number
-  swr: number
-  initial: boolean
-  revalidateOnFocus: boolean
-  focusThrottleInterval: number
-
-  // hooks
-  onSuccess: (d: D, k: string, c: SWRConfig) => any
-  onError: (e: E, k: string, c: SWRConfig) => any
-}
-
-const defaultConfig: SWRConfig = {
-  maxAge: 0,
-  swr: 0,
-  initial: true,
-  revalidateOnFocus: true,
-  focusThrottleInterval: 5000,
-
-  // hooks
-  onSuccess: () => {},
-  onError: () => {}
-}
+import defaultConfig, { SWRConfig } from './config'
 
 export type UpdateReason = Ref<'fresh' | 'stale' | 'network'>
 type SWRResult<D, E> = [
@@ -88,6 +65,7 @@ export default function useSWR<Data = any, Error = any>(
     revalidate()
   }
 
+  // revalidateId is used to determine whether the result of an asynchronous request is valid.
   let revalidateId = 0
   async function revalidate() {
     const currentId = ++revalidateId

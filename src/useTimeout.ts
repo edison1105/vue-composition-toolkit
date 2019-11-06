@@ -9,7 +9,7 @@ import { assert, isNumber } from './utils'
 
 export default function useTimeout(
   ms: number = 1000
-): [Ref<boolean>, () => void] {
+): [Ref<boolean>, () => void, () => void] {
   __DEV__ &&
     assert(
       isNumber(ms),
@@ -21,12 +21,13 @@ export default function useTimeout(
   const refReady = ref(false)
   let timer: any = null
   const setTimer = () => {
-    refReady.value = false
+    clear()
     timer = setTimeout(() => {
       refReady.value = true
     }, ms)
   }
   const clear = () => {
+    refReady.value = false
     clearTimeout(timer)
   }
 
@@ -41,5 +42,7 @@ export default function useTimeout(
     onUnmounted(clear)
   }
 
-  return [refReady, clear]
+  const runTimerAgain = setTimer // Just for a better name
+
+  return [refReady, clear, runTimerAgain]
 }
