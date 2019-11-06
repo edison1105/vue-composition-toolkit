@@ -48,7 +48,7 @@ function useSessionStorage<Data = any>(
         console.warn(e)
       }
     },
-    { flush: 'sync' }
+    { flush: 'sync', lazy: true }
   )
 
   return refVal
