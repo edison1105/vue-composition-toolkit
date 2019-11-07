@@ -18,6 +18,7 @@ export { default as useVisibilityState } from './useVisibilityState'
 export { default as useLocalStorage } from './useLocalStorage'
 export { default as useSessionStorage } from './useSessionStorage'
 export { default as useWindowFocus } from './useWindowFocus'
+export { default as useAsyncState } from './useAsyncState'
 export { default as useSWR } from './useSWR'
 
 // utils

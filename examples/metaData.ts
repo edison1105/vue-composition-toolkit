@@ -47,6 +47,9 @@ import SessionStorageStory, {
 import WindowFocusStory, {
   code as windowFocusCode
 } from '../src/stories/useWindowFocus.story'
+import AsyncStateStory, {
+  code as asyncStateCode
+} from '../src/stories/useAsyncState.story'
 import SWRStory, { code as SWRCode } from '../src/stories/useSWR.story'
 
 interface Meta {
@@ -100,6 +103,11 @@ export default [
     title: 'useWindowFocus',
     component: WindowFocusStory,
     code: windowFocusCode
+  },
+  {
+    title: 'useAsyncState',
+    component: AsyncStateStory,
+    code: asyncStateCode
   },
   { title: 'useSWR', component: SWRStory, code: SWRCode }
 ] as MetaData
