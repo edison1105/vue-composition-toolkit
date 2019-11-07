@@ -27,8 +27,7 @@ export default {
       },
       {
         maxAge: 10000,
-        swr: 10000,
-        initial: false
+        swr: 10000
       }
     )
 

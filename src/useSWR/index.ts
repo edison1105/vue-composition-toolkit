@@ -3,6 +3,7 @@ import throttle from 'lodash.throttle'
 import useLocalStorage from '../useLocalStorage'
 import useVisibilityState from '../useVisibilityState'
 import useWindowFocus from '../useWindowFocus'
+import useTimeoutFn from '../useTimeoutFn'
 import { setCache, getCache } from './cache'
 import { now, isClient, isDef } from '../utils'
 import defaultConfig, { SWRConfig } from './config'
@@ -37,7 +38,7 @@ export default function useSWR<Data = any, Error = any>(
   const refMaxAge = computed(() => refCachedTime.value + config.maxAge)
   const refSwr = computed(() => refMaxAge.value + config.swr)
 
-  function performFetch() {
+  async function performFetch() {
     const startTime = now()
     // Is fresh, use the cache to satisfy the request
     if (startTime <= refMaxAge.value) {
@@ -61,19 +62,33 @@ export default function useSWR<Data = any, Error = any>(
 
     // Requests fall outside of the `stale-while-revalidate` window,
     // getting the response from the network.
+
+    await revalidate()
     refReason.value = 'network'
-    revalidate()
   }
 
   // revalidateId is used to determine whether the result of an asynchronous request is valid.
   let revalidateId = 0
   async function revalidate() {
     const currentId = ++revalidateId
+
+    let isTimeout = false
+    const [stopTimeoutFn] = useTimeoutFn(() => {
+      config.onRevalidateTimeout(key, refReason.value, config)
+      // Although the request has timed out, it is still possible to return data in the future,
+      // so it is marked as timed out in order to discard future data.
+      config.shouldTimeoutInvalid && (isTimeout = true)
+    }, config.timeout)
+    // If 0, the timeout is immediately turned off.
+    if (!config.timeout) stopTimeoutFn()
+
     try {
       const res = await fetch()
+      stopTimeoutFn()
+
       // Means that there is a newer `revalidation` here,
       // and invalidates the current `revalidation`.
-      if (currentId < revalidateId) return
+      if (currentId < revalidateId || isTimeout) return
 
       refData.value = res
       setCache(key, refData.value)
@@ -82,9 +97,10 @@ export default function useSWR<Data = any, Error = any>(
       // update cachedTime
       refCachedTime.value = now()
     } catch (e) {
+      stopTimeoutFn()
       // Means that there is a newer `revalidation` here,
       // and invalidates the current `revalidation`.
-      if (currentId < revalidateId) return
+      if (currentId < revalidateId || isTimeout) return
 
       refError.value = e
       // call onError hook
@@ -104,13 +120,13 @@ export default function useSWR<Data = any, Error = any>(
       { lazy: !config.initial }
     )
 
-  const forceFetch = () => {
+  const doFetch = () => {
     lock = false
     performFetch()
   }
 
   return [
-    forceFetch,
+    doFetch,
     {
       refData,
       refError,
