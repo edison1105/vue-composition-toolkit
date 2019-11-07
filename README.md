@@ -10,6 +10,7 @@ Vue composition-api toolkit.
 - [x] useSWR
 - [x] useWindowSize
 - [x] useWindowFocus
+- [x] useAsyncState
 - [x] useCopyToClipboard
 - [x] useRaf
 - [x] useGeolocation
