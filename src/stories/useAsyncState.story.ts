@@ -36,6 +36,7 @@ export default {
 }
 
 export const code = `
+\`\`\`js
 function fetch() {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -60,7 +61,7 @@ export default {
           'button',
           {
             onClick() {
-              runAsync
+              runAsync()
             }
           },
           'Run Async'
@@ -69,4 +70,5 @@ export default {
     ]
   }
 }
+\`\`\`
 `
