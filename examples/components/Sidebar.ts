@@ -29,6 +29,7 @@ export default createComponent<Props>(props => {
           height: 100%;
           border-right: 1px solid var(--line-color);
           background-color: var(--sidebar-bg);
+          overflow: auto;
           & header {
             font-size: 16px;
             padding: 4px;
