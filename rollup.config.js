@@ -78,7 +78,7 @@ function createConfig(output, plugins = []) {
   if (isGlobalBuild) {
     output.name = options.name
     output.globals = {
-      '@vue/runtime-dom': 'VueDOMRuntime'
+      '@vue/runtime-dom': 'VueRuntimeDOM'
     }
   }
 

@@ -1,5 +1,4 @@
 import {
-  createComponent,
   h,
   ref,
   ComponentOptions,
@@ -13,82 +12,86 @@ import useMarked from '../compose/useMarked'
 import Resizebar, { ResizebarProps } from './Resizebar'
 import { useWindowSize } from '../../src'
 
-export default createComponent(() => {
-  const refMarkdownSource = ref(store.currentMetaData.code)
-  watch(
-    () => store.currentMetaData.code,
-    val => (refMarkdownSource.value = val)
-  )
-  const refDocEl = ref(null)
-  useMarked(refDocEl, refMarkdownSource)
-
-  const [, refY] = useWindowSize()
-  const resizeBarProps = reactive<ResizebarProps>({
-    axis: 'y',
-    rootSelector: '--doc-height',
-    bounds: { min: 300, max: computed(() => refY.value - 50) }
-  })
-
-  return () =>
-    h(
-      'main',
-      {
-        class: css`
-          flex-grow: 1;
-          padding: 10px;
-          position: relative;
-        `
-      },
-      [
-        h(
-          'section',
-          {
-            class: css`
-              height: calc(${window.innerHeight}px - var(--doc-height) - 30px);
-              overflow: auto;
-            `
-          },
-          h(store.currentMetaData.component as ComponentOptions)
-        ),
-        h(
-          'section',
-          {
-            class: css`
-              display: flex;
-              flex-direction: column;
-              position: absolute;
-              left: 0;
-              bottom: 0;
-              height: var(--doc-height);
-              width: 100%;
-              background-color: #fff;
-            `
-          },
-          [
-            h(Resizebar, resizeBarProps),
-            h(
-              'header',
-              {
-                class: css`
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  width: 100%;
-                  line-height: 30px;
-                  height: 30px;
-                  padding-left: 10px;
-                  border-top: 1px solid var(--line-color);
-                  border-bottom: 1px solid var(--line-color);
-                `
-              },
-              'Docs & Code'
-            ),
-            h('main', { class: markdownClassName, ref: refDocEl })
-          ]
-        )
-      ]
+export default {
+  setup() {
+    const refMarkdownSource = ref(store.currentMetaData.code)
+    watch(
+      () => store.currentMetaData.code,
+      val => (refMarkdownSource.value = val)
     )
-})
+    const refDocEl = ref(null)
+    useMarked(refDocEl, refMarkdownSource)
+
+    const [, refY] = useWindowSize()
+    const resizeBarProps = reactive<ResizebarProps>({
+      axis: 'y',
+      rootSelector: '--doc-height',
+      bounds: { min: 300, max: computed(() => refY.value - 50) }
+    })
+
+    return () =>
+      h(
+        'main',
+        {
+          class: css`
+            flex-grow: 1;
+            padding: 10px;
+            position: relative;
+          `
+        },
+        [
+          h(
+            'section',
+            {
+              class: css`
+                height: calc(
+                  ${window.innerHeight}px - var(--doc-height) - 30px
+                );
+                overflow: auto;
+              `
+            },
+            h(store.currentMetaData.component as ComponentOptions)
+          ),
+          h(
+            'section',
+            {
+              class: css`
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                height: var(--doc-height);
+                width: 100%;
+                background-color: #fff;
+              `
+            },
+            [
+              h(Resizebar, resizeBarProps),
+              h(
+                'header',
+                {
+                  class: css`
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    line-height: 30px;
+                    height: 30px;
+                    padding-left: 10px;
+                    border-top: 1px solid var(--line-color);
+                    border-bottom: 1px solid var(--line-color);
+                  `
+                },
+                'Docs & Code'
+              ),
+              h('main', { class: markdownClassName, ref: refDocEl })
+            ]
+          )
+        ]
+      )
+  }
+}
 
 const markdownClassName = css`
   line-height: 1.5;

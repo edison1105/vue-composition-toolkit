@@ -1,4 +1,4 @@
-import { h, Ref, createComponent } from '@vue/runtime-dom'
+import { h, Ref } from '@vue/runtime-dom'
 import { css } from 'emotion'
 import { useCssVar } from '../../src'
 
@@ -10,48 +10,50 @@ export interface ResizebarProps {
   }
   rootSelector: string
 }
-export default createComponent<ResizebarProps>(props => {
-  let { axis, rootSelector, bounds } = props
+export default {
+  setup(props: ResizebarProps) {
+    let { axis, rootSelector, bounds } = props
 
-  const refCssVar = useCssVar(rootSelector)
+    const refCssVar = useCssVar(rootSelector)
 
-  const checkPosition = (e: MouseEvent | TouchEvent) => {
-    const touch = e instanceof TouchEvent ? e.touches[0] : e
-    const barPosition =
-      axis === 'x' ? touch.pageX : window.innerHeight - touch.pageY
+    const checkPosition = (e: MouseEvent | TouchEvent) => {
+      const touch = e instanceof TouchEvent ? e.touches[0] : e
+      const barPosition =
+        axis === 'x' ? touch.pageX : window.innerHeight - touch.pageY
 
-    if (bounds && (bounds.min >= barPosition || bounds.max <= barPosition))
-      return false
+      if (bounds && (bounds.min >= barPosition || bounds.max <= barPosition))
+        return false
 
-    refCssVar.value = barPosition + 'px'
+      refCssVar.value = barPosition + 'px'
+    }
+
+    const dragstart = () => {
+      document.onselectstart = () => false
+
+      window.addEventListener('mousemove', checkPosition)
+      window.addEventListener('mouseup', () => {
+        window.removeEventListener('mousemove', checkPosition)
+        dragend()
+      })
+      window.addEventListener('touchmove', checkPosition)
+      window.addEventListener('touchend', () => {
+        window.removeEventListener('touchmove', checkPosition)
+        dragend()
+      })
+    }
+
+    const dragend = () => {
+      document.onselectstart = () => true
+    }
+
+    return () =>
+      h('div', {
+        class: styles[axis],
+        onMouseDown: dragstart,
+        onTouchStart: dragstart
+      })
   }
-
-  const dragstart = () => {
-    document.onselectstart = () => false
-
-    window.addEventListener('mousemove', checkPosition)
-    window.addEventListener('mouseup', () => {
-      window.removeEventListener('mousemove', checkPosition)
-      dragend()
-    })
-    window.addEventListener('touchmove', checkPosition)
-    window.addEventListener('touchend', () => {
-      window.removeEventListener('touchmove', checkPosition)
-      dragend()
-    })
-  }
-
-  const dragend = () => {
-    document.onselectstart = () => true
-  }
-
-  return () =>
-    h('div', {
-      class: styles[axis],
-      onMouseDown: dragstart,
-      onTouchStart: dragstart
-    })
-})
+}
 
 const styles = {
   x: css`
