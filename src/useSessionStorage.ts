@@ -38,6 +38,7 @@ function useSessionStorage<Data = any>(
   }
 
   watch(
+    refVal,
     () => {
       if (!isClient) {
         return
