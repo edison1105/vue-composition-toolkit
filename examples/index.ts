@@ -42,4 +42,4 @@ const App = {
   }
 }
 
-createApp().mount(App, '#app')
+createApp(App).mount('#app')

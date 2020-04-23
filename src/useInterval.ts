@@ -29,12 +29,16 @@ export default function useInterval(
   }
 
   if (isRef(delay)) {
-    watch(delay, (newVal, oldVal, onCleanup) => {
-      if (!isNumber(newVal)) return
-      start()
+    watch(
+      delay,
+      (newVal, oldVal, onCleanup) => {
+        if (!isNumber(newVal)) return
+        start()
 
-      onCleanup(stop)
-    })
+        onCleanup(stop)
+      },
+      { immediate: true }
+    )
   } else if (initial) {
     start()
   }

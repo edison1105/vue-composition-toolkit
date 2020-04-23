@@ -10,6 +10,7 @@ interface Props {
 }
 
 export default {
+  props: ['metaData'],
   setup(props: Props) {
     const { metaData } = props
 

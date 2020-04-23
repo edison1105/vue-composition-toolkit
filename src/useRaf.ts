@@ -16,10 +16,14 @@ export default function useRaf(
 
   let isKeep = getRawValue(keep)
   isRef(keep) &&
-    watch(keep, val => {
-      isKeep = getRawValue(val)
-      startTime = performance.now()
-    })
+    watch(
+      keep,
+      val => {
+        isKeep = getRawValue(val)
+        startTime = performance.now()
+      },
+      { immediate: true }
+    )
 
   const refIsActive = ref(false)
   function step(currentTime: number) {

@@ -13,12 +13,16 @@ export default function useMarked(
     refDom.value && (refDom.value.innerHTML = '')
   })
 
-  watch(refSource, (val, oldVal, onCleanup) => {
-    refDom.value && (refDom.value.innerHTML = marked(refSource.value))
-    Prism && Prism.highlightAll()
+  watch(
+    refSource,
+    (val, oldVal, onCleanup) => {
+      refDom.value && (refDom.value.innerHTML = marked(refSource.value))
+      Prism && Prism.highlightAll()
 
-    onCleanup(() => {
-      refDom.value && (refDom.value.innerHTML = '')
-    })
-  })
+      onCleanup(() => {
+        refDom.value && (refDom.value.innerHTML = '')
+      })
+    },
+    { immediate: true }
+  )
 }

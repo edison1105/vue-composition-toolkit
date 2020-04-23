@@ -8,12 +8,16 @@ export default function useCssVar(
   let el: HTMLElement = document.documentElement
 
   if (isRef(refEl)) {
-    watch(refEl, () => {
-      if (refEl.value) {
-        el = refEl.value as HTMLElement
-        refVar.value = getComputedStyle(el).getPropertyValue(prop)
-      }
-    })
+    watch(
+      refEl,
+      () => {
+        if (refEl.value) {
+          el = refEl.value as HTMLElement
+          refVar.value = getComputedStyle(el).getPropertyValue(prop)
+        }
+      },
+      { immediate: true }
+    )
   } else {
     refVar.value = getComputedStyle(el).getPropertyValue(prop)
   }
@@ -23,7 +27,7 @@ export default function useCssVar(
     val => {
       el && el.style.setProperty(prop, val)
     },
-    { lazy: true }
+    { immediate: true }
   )
 
   return refVar

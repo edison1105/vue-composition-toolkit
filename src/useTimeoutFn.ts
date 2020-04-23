@@ -11,7 +11,7 @@ export default function useTimeoutFn(
     maturity => {
       maturity && cb()
     },
-    { lazy: true }
+    { immediate: true }
   )
 
   return [clear, runTimerAgain, refIsReady]

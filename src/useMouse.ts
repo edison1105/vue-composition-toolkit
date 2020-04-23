@@ -32,49 +32,53 @@ export default function useMouse(
     elW: 0
   })
 
-  const stop = watch(refEl, (el: Element | null, prevEl, onCleanup) => {
-    let moveHandler = (event: MouseEvent) => {
-      if (el) {
-        const {
-          left,
-          top,
-          width: elW,
-          height: elH
-        } = el.getBoundingClientRect()
-        const posX = left + window.pageXOffset
-        const posY = top + window.pageYOffset
-        const elX = event.pageX - posX
-        const elY = event.pageY - posY
+  const stop = watch(
+    refEl,
+    (el: Element | null, prevEl, onCleanup) => {
+      let moveHandler = (event: MouseEvent) => {
+        if (el) {
+          const {
+            left,
+            top,
+            width: elW,
+            height: elH
+          } = el.getBoundingClientRect()
+          const posX = left + window.pageXOffset
+          const posY = top + window.pageYOffset
+          const elX = event.pageX - posX
+          const elY = event.pageY - posY
 
-        Object.assign(refObject.value, {
-          docX: event.pageX,
-          docY: event.pageY,
-          posX,
-          posY,
-          elX,
-          elY,
-          elH,
-          elW
-        })
-      }
-    }
-
-    if (isObject(options)) {
-      let wait = 0
-      if (options.wait && options.wait > 0) {
-        wait = options.wait
-        delete options.wait
+          Object.assign(refObject.value, {
+            docX: event.pageX,
+            docY: event.pageY,
+            posX,
+            posY,
+            elX,
+            elY,
+            elH,
+            elW
+          })
+        }
       }
 
-      moveHandler = throttle(moveHandler, wait, options)
-    }
+      if (isObject(options)) {
+        let wait = 0
+        if (options.wait && options.wait > 0) {
+          wait = options.wait
+          delete options.wait
+        }
 
-    document.addEventListener('mousemove', moveHandler)
+        moveHandler = throttle(moveHandler, wait, options)
+      }
 
-    onCleanup(() => {
-      document.removeEventListener('mousemove', moveHandler)
-    })
-  })
+      document.addEventListener('mousemove', moveHandler)
+
+      onCleanup(() => {
+        document.removeEventListener('mousemove', moveHandler)
+      })
+    },
+    { immediate: true }
+  )
 
   return [refObject, stop]
 }

@@ -1,4 +1,4 @@
-import { h, render, ref, nodeOps, nextTick } from '@vue/runtime-test'
+import { h, render, ref, nodeOps, nextTick } from '#'
 import useInterval from '../useInterval'
 
 beforeEach(() => {

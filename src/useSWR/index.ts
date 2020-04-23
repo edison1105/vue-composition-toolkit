@@ -117,7 +117,7 @@ export default function useSWR<Data = any, Error = any>(
       ([isVisible, isFocus]) => {
         !lock && (isVisible && isFocus) && onFocus()
       },
-      { lazy: !config.initial }
+      { immediate: config.initial }
     )
 
   const doFetch = () => {

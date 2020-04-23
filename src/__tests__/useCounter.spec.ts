@@ -1,4 +1,4 @@
-import { ref } from '@vue/runtime-test'
+import { ref } from '#'
 import useCounter from '../useCounter'
 
 describe('useCounter', () => {

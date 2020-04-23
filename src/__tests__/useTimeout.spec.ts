@@ -1,11 +1,4 @@
-import {
-  h,
-  render,
-  nodeOps,
-  serializeInner,
-  nextTick,
-  ref
-} from '@vue/runtime-test'
+import { h, render, nodeOps, serializeInner, nextTick, ref } from '#'
 import useTimeout from '../useTimeout'
 
 const refVal = ref(0)

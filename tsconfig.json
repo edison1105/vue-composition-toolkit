@@ -18,7 +18,10 @@
     "jsx": "react",
     "lib": ["esnext", "dom"],
     "types": ["jest", "node"],
-    "rootDir": "."
+    "rootDir": ".",
+    "paths": {
+      "#": ["test-utils/index.ts"]
+    }
   },
   "include": [
     "src",

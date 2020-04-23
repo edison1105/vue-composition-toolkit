@@ -1,4 +1,4 @@
-import { render, h, ref, nodeOps, nextTick } from '@vue/runtime-test'
+import { render, h, ref, nodeOps, nextTick } from '#'
 import useRendered from '../useRendered'
 
 describe('useRendered', () => {

@@ -1,4 +1,4 @@
-import { h, Ref, render, nodeOps } from '@vue/runtime-test'
+import { h, Ref, render, nodeOps } from '#'
 import useRaf from '../useRaf'
 import { replaceRaf } from 'raf-stub'
 

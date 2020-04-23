@@ -1,11 +1,11 @@
-import { ref, Ref, UnwrapRef } from '@vue/runtime-dom'
+import { ref, Ref } from '@vue/runtime-dom'
 import useTimeoutFn from './useTimeoutFn'
 
 type State = 'idle' | 'pending' | 'success' | 'error' | 'timeout'
-type RawFetcher<D> = (...args: any[]) => Promise<UnwrapRef<D>>
+type RawFetcher<D> = (...args: any[]) => Promise<D>
 type Result<D, E> = {
-  refData: Ref<D>
-  refError: Ref<E>
+  refData: Ref<D | undefined>
+  refError: Ref<E | undefined>
   refState: Ref<State>
   runAsync: () => any
 }
@@ -32,7 +32,6 @@ export default function useAsyncState<Data = any, Error = any>(
 
     asyncFn()
       .then(data => {
-        console.log(data)
         if (refState.value === 'timeout') return
         stop()
         refData.value = data

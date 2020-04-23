@@ -1,4 +1,4 @@
-import { render, h, nodeOps, serializeInner, nextTick } from '@vue/runtime-test'
+import { render, h, nodeOps, serializeInner, nextTick } from '#'
 import useWindowSize from '../useWindowSize'
 import { wait } from './utils'
 

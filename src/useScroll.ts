@@ -34,17 +34,21 @@ export default function useScroll(
 
   let stopWatch: () => void
   onMounted(() => {
-    stopWatch = watch(refEl, (el, prevEl, onCleanup) => {
-      if (el) {
-        el.addEventListener('scroll', handler)
-      } else if (prevEl) {
-        prevEl.removeEventListener('scroll', handler)
-      }
-      onCleanup(() => {
-        refX.value = refY.value = 0
-        el && el.removeEventListener('scroll', handler)
-      })
-    })
+    stopWatch = watch(
+      refEl,
+      (el, prevEl, onCleanup) => {
+        if (el) {
+          el.addEventListener('scroll', handler)
+        } else if (prevEl) {
+          prevEl.removeEventListener('scroll', handler)
+        }
+        onCleanup(() => {
+          refX.value = refY.value = 0
+          el && el.removeEventListener('scroll', handler)
+        })
+      },
+      { immediate: true }
+    )
   })
 
   onUnmounted(() => {

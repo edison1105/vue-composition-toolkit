@@ -1,4 +1,4 @@
-import { Ref, isRef } from '@vue/runtime-dom'
+import { Ref, isRef, ref } from '@vue/runtime-dom'
 
 export const isDef = <T = any>(val?: T): val is T => typeof val !== 'undefined'
 
@@ -16,7 +16,18 @@ export const isWindow = (val: any): val is Window =>
   typeof window !== 'undefined' && toString.call(val) === '[object Window]'
 export const isClient = typeof window !== 'undefined'
 
-export const getRawValue = <V>(val?: V): V extends Ref<infer M> ? M : V => {
-  return isRef(val) ? val.value : val
+type inferRawValueType<V> = V extends Ref<infer M> ? M : V
+export const getRawValue = <V>(val: V): inferRawValueType<V> => {
+  if (isRef<inferRawValueType<V>>(val)) {
+    val
+    return val.value
+  }
+  return val as inferRawValueType<V>
 }
 export const now = () => Date.now()
+
+const r = ref(0)
+
+if (isRef(r)) {
+  r
+}

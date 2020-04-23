@@ -6,9 +6,7 @@ export default function useVisibilityState() {
 
   if (isDef(document) && isDef(document.visibilityState)) {
     const setVisibility = () => {
-      refVisibility.value =
-        document.visibilityState === 'visible' ||
-        document.visibilityState === 'prerender'
+      refVisibility.value = document.visibilityState === 'visible'
     }
 
     document.addEventListener('visibilitychange', setVisibility, false)

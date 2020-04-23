@@ -5,9 +5,13 @@ export default {
   setup() {
     const refVisibility = useVisibilityState()
 
-    watch(refVisibility, () => {
-      console.log('Visibility State: ', refVisibility.value)
-    })
+    watch(
+      refVisibility,
+      () => {
+        console.log('Visibility State: ', refVisibility.value)
+      },
+      { immediate: true }
+    )
 
     return () => h('h1', 'Switch tabs and check the console')
   }
@@ -21,7 +25,7 @@ export default {
 
     watch(refVisibility, () => {
       console.log('Visibility State: ', refVisibility.value)
-    })
+    }, { immediate: true })
 
     return () => h('h1', 'Switch tabs and check the console')
   }

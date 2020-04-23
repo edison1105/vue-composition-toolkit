@@ -1,11 +1,4 @@
-import {
-  render,
-  h,
-  nodeOps,
-  serializeInner,
-  nextTick,
-  Ref
-} from '@vue/runtime-test'
+import { render, h, nodeOps, serializeInner, nextTick, Ref } from '#'
 import useSessionStorage from '../useSessionStorage'
 
 beforeEach(() => {

@@ -49,7 +49,7 @@ function useLocalStorage<Data = any>(
         console.warn(e)
       }
     },
-    { flush: 'sync', lazy: true }
+    { flush: 'sync', immediate: true }
   )
 
   return refVal

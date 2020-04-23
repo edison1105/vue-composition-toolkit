@@ -11,6 +11,7 @@ export interface ResizebarProps {
   rootSelector: string
 }
 export default {
+  props: ['axis', 'bounds', 'rootSelector'],
   setup(props: ResizebarProps) {
     let { axis, rootSelector, bounds } = props
 

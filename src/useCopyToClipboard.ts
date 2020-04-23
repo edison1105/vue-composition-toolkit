@@ -17,7 +17,7 @@ export default function useCopyToClipboard(
         refIsSuccess.value = copy(str)
       }
     },
-    { lazy: !initial, flush: 'sync' }
+    { immediate: !!initial, flush: 'sync' }
   )
 
   return [refClipboard, refIsSuccess, refCopied]

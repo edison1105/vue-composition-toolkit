@@ -14,5 +14,8 @@ module.exports = {
   watchPathIgnorePatterns: ['/node_modules/'],
   moduleFileExtensions: ['js', 'ts', 'tsx'],
   rootDir: __dirname,
-  testMatch: ['<rootDir>/src/__tests__/**/*spec.ts?(x)']
+  testMatch: ['<rootDir>/src/__tests__/**/*spec.ts?(x)'],
+  moduleNameMapper: {
+    '#': '<rootDir>/test-utils'
+  }
 }
